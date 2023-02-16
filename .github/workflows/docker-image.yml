@@ -47,16 +47,17 @@ jobs:
           NEW_VERSION: ${{ steps.version.outputs.version }}
           REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
         run: |
-          docker buildx build -t joseidel07/image-finder:$NEW_VERSION .
-          docker buildx build -t joseidel07/image-finder:latest .
+          docker buildx build -t $REPOSITORY_NAME:$NEW_VERSION .
+          docker buildx build -t $REPOSITORY_NAME:latest .
 
       - name: Push Docker Image to Docker Hub
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
           REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
         run: |
-          docker push joseidel07/image-finder:$NEW_VERSION
-          docker push joseidel07/image-finder:latest 
+          docker image ls
+          docker push $REPOSITORY_NAME:$NEW_VERSION
+          docker push $REPOSITORY_NAME:latest 
           
       
         
