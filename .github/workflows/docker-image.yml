@@ -53,6 +53,7 @@ jobs:
       - name: Push Docker Image to Docker Hub
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
+          REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
         run: |
           docker push $REPOSITORY_NAME:$NEW_VERSION
           docker push $REPOSITORY_NAME:$latest 
