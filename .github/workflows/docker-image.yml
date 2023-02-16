@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Git semantic version
+      - name: Git Semantic Version
         uses: paulhatch/semantic-version@v4.0.3
         with:
           major_pattern: "major:"          
@@ -26,13 +26,25 @@ jobs:
           format: "${major}.${minor}.${patch}-prerelease${increment}"
         id: version
       
-      - name: Docker login
+      - name: Docker Login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          NEW_VERSION: ${{ steps.version.outputs.version }}
         run: | 
           echo "Iniciando Login"
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-          echo "New version: $NEW_VERSION !!!!!!"
           echo "Fin del login"
+          
+      - name: Create Build Arquitecture
+        env:
+          BUILDER_NAME: "multiplatform"
+        run: |
+          docker buildx create --platform linux/arm64,linux/arm/v8 --name $BUILDER_NAME
+          docker buildx use $BUILDER_NAME
+          
+      - name: Build Docker Image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+          REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
+        run: |
+          docker buildx build -t $REPOSITORY_NAME:$NEW_VERSION .
