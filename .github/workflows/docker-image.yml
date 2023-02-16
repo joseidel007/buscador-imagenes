@@ -56,7 +56,7 @@ jobs:
           REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
         run: |
           docker push $REPOSITORY_NAME:$NEW_VERSION
-          docker push $REPOSITORY_NAME:$latest 
+          docker push $REPOSITORY_NAME:latest 
           
       
         
