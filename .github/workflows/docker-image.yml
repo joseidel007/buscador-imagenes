@@ -35,20 +35,20 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           echo "Fin del login"
           
-      - name: Create Build Arquitecture
-        env:
-          BUILDER_NAME: "multiplatform"
-        run: |
-          docker buildx create --platform linux/arm64,linux/arm/v8 --name $BUILDER_NAME
-          docker buildx use $BUILDER_NAME
+#       - name: Create Build Arquitecture
+#         env:
+#           BUILDER_NAME: "multiplatform"
+#         run: |
+#           docker buildx create --platform linux/arm64,linux/arm/v8 --name $BUILDER_NAME
+#           docker buildx use $BUILDER_NAME
           
       - name: Build Docker Image
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
           REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
         run: |
-          docker buildx build -t $REPOSITORY_NAME:$NEW_VERSION .
-          docker buildx build -t $REPOSITORY_NAME:latest .
+          docker buildx build --platform linux/arm64,linux/arm/v8 -t $REPOSITORY_NAME:$NEW_VERSION .
+          docker buildx build --platform linux/arm64,linux/arm/v8  -t $REPOSITORY_NAME:latest .
 
       - name: Push Docker Image to Docker Hub
         env:
