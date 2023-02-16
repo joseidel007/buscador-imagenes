@@ -35,10 +35,6 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           echo "Fin del login"
           
-#       - name: Create Build Arquitecture
-#         run: |
-#           docker buildx create --platform linux/amd64,linux/arm64 --name multiplatform
-#           docker buildx use multiplatform
           
       - name: Build Docker Image
         env:
@@ -53,7 +49,6 @@ jobs:
           NEW_VERSION: ${{ steps.version.outputs.version }}
           REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
         run: |
-          docker image ls
           docker push $REPOSITORY_NAME:$NEW_VERSION
           docker push $REPOSITORY_NAME:latest 
           
