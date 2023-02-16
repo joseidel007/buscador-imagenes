@@ -16,6 +16,7 @@ class  App extends React.Component {
     const elemento = document.querySelector('.jumbotron');
     elemento.scrollIntoView('smooth', 'start');
   }
+  
 
   paginaSiguiente = () =>{
     //Leer el state de la pagina actual
