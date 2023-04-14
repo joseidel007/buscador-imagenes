@@ -9,6 +9,7 @@ class Buscador extends React.Component {
     //Es llamada desde el onSubmit para obtener los datos que introduzcan en el formulario
     obtenerDatos = (e) =>{
         e.preventDefault();
+        console.log("Test");
 
         //Tomamos el valor del Input 
         const termino = this.busquedaRef.current.value
